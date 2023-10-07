@@ -15,12 +15,12 @@ def add_node(session, node):
 def add_edge(session, docid1, docid2, edge):
     result = session.run("MATCH (a:Wiki {docid: $docid1}) MATCH (b:Wiki {docid: $docid2}) MERGE (a)-[:$edge]->(b)", docid1=docid1, docid2=docid2, edge=edge)
     
-data_dir = "/data-disk/philippe/T-Rex"
+data_dir = "/app/T-Rex"
 for file in os.listdir(data_dir):
     if '.json' in file:
         s_time = time.time()
         driver = GraphDatabase.driver(uri, auth=(username, password))
-        data = json.load(open("C:\\Users\\96181\\Desktop\\Master's Thesis\\T-Rex-Sample-Data.json", "r+"))
+        data = json.load(open(f"{data_dir}/{file}", "r+"))
         
         with driver.session() as session:
             for d in tqdm(data):
@@ -32,6 +32,6 @@ for file in os.listdir(data_dir):
                 }
                 add_node(session, entry)
 
-        print(f"Time for file {file} is {int(e_time - time.time())}sec")
+        print(f"Time for file {file} is {int(time.time() - s_time)}sec")
         del data
         gc.collect()
