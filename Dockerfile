@@ -6,6 +6,6 @@ COPY ./requirements.txt /app/requirements.txt
 WORKDIR /app
 RUN pip install -r requirements.txt
 
-COPY ./neo4j_add_nodes.py /app/neo4j_add_nodes.py
+COPY ./neo4j_add_edges.py /app/neo4j_add_edges.py
 
-CMD [ "python", "-u", "neo4j_add_nodes.py" ]
+CMD [ "python", "-u", "neo4j_add_edges.py" ]
