@@ -6,6 +6,6 @@ COPY ./requirements.txt /app/requirements.txt
 WORKDIR /app
 RUN pip install -r requirements.txt
 
-COPY ./neo4j_add_edges.py /app/neo4j_add_edges.py
+COPY ./weaviate_add.py /app/weaviate_add.py
 
-CMD [ "python", "-u", "neo4j_add_edges.py" ]
+CMD [ "python", "-u", "weaviate_add.py" ]

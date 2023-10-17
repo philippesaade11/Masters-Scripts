@@ -1,3 +1,5 @@
-neo4j
+weaviate-client
+nltk
 tqdm
 requests
+sentence-transformers
