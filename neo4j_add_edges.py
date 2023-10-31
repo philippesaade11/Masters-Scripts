@@ -4,16 +4,16 @@ from tqdm import tqdm
 import time
 import gc
 import os
+import requests
+import re
 
 uri = "neo4j://10.195.2.227:7687"
 username = "neo4j"
 password = "neo4j-connect"
 
-def add_node(session, node):
-    result = session.run("CREATE (a:Wiki $node)", node=node)
-        
 def add_edge(session, docid1, docid2, edge):
-    result = session.run("MATCH (a:Wiki {docid: $docid1}) MATCH (b:Wiki {docid: $docid2}) MERGE (a)-[r:Link]->(b) SET r += $edge", docid1=docid1, docid2=docid2, edge=edge)
+    edge_name = re.sub(r'[^0-9a-zA-Z_]', '', edge['predicate_name'].replace(' ', '_'))
+    result = session.run(f"MATCH (a:Wiki {{docid: $docid1}}) MATCH (b:Wiki {{docid: $docid2}}) MERGE (a)-[r:{edge_name}]->(b) SET r += $edge", docid1=docid1, docid2=docid2, edge=edge)
 
 predicate_names = {}
 def get_predicate_name(triple):
@@ -45,7 +45,6 @@ for file in os.listdir(data_dir):
         with driver.session() as session:
             for d in tqdm(data):
                 for t in d['triples']:
-                    count += 1
                     try:
                         predicate_name, predicate_description = get_predicate_name(t)
                         entry = {

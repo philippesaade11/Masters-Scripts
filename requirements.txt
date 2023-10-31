@@ -1,5 +1,3 @@
-weaviate-client
-nltk
 tqdm
 requests
-sentence-transformers
+neo4j

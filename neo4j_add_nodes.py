@@ -12,13 +12,10 @@ password = "neo4j-connect"
 def add_node(session, node):
     result = session.run("CREATE (a:Wiki $node)", node=node)
         
-def add_edge(session, docid1, docid2, edge):
-    result = session.run("MATCH (a:Wiki {docid: $docid1}) MATCH (b:Wiki {docid: $docid2}) MERGE (a)-[:$edge]->(b)", docid1=docid1, docid2=docid2, edge=edge)
-    
 #Expected number: 4645090
 data_dir = "/app/T-Rex"
 for file in os.listdir(data_dir):
-    if '.json' in file and found:
+    if '.json' in file:
         s_time = time.time()
         driver = GraphDatabase.driver(uri, auth=(username, password))
         data = json.load(open(f"{data_dir}/{file}", "r+"))
